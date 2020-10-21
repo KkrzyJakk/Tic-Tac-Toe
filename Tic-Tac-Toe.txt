@@ -1,0 +1,178 @@
+package tictactoe;
+import java.util.*;
+
+public class Main {
+    final static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+
+        String winner1 = game();
+
+        switch (winner1) {
+            case "D":
+                System.out.println("Draw");
+                break;
+            case "X":
+                System.out.println("X wins");
+                break;
+            case "O":
+                System.out.println("O wins");
+                break;
+            default:
+                System.out.println(winner1);
+                break;
+        }
+    }
+
+    static void print(String[][] characters) {
+        for (int j = 0; j < 5; j++) {                                               // printing the board
+            for (int k = 0; k < 9; k++) {
+                if (j == 0 || j == 4) {
+                    System.out.print("-");
+                } else if (k == 0 || k == 8) {
+                    System.out.print("|");
+                } else if (k % 2 != 0) {
+                    System.out.print(" ");
+                } else System.out.print(characters[j - 1][(k / 2) - 1]);
+            }
+            System.out.println();
+        }
+    }
+
+    public static String game() {
+        String[][] characters = new String[3][3];
+        String input = " ";
+        int draw;
+
+        for (int i = 0; i < 3; i++) {                                   // filling array with empty fields
+            for (int j = 0; j < 3; j++) {
+                characters[i][j] = " ";
+            }
+        }
+        print(characters);
+
+        for(; true; ) {
+            int check;                                                                            // X's Go
+            int t = 0;
+            int a = 0;
+            int b = 0;
+            int r = 0;
+            for (int i = 0; i < 2; ) {
+                System.out.print("Enter the coordinates: ");
+                input = sc.nextLine();
+
+                for (int j = 0; j < 3; j++) {
+                    if (Character.isDigit(input.charAt(j))) {
+                        i++;
+                        check = Integer.parseInt(Character.toString(input.charAt(j)));
+                        a = Integer.parseInt(Character.toString(input.charAt(0)));
+                        b = Integer.parseInt(Character.toString(input.charAt(2)));
+                        if (check > 3) {
+                            t++;
+                        }
+
+                    }
+                }
+                if (i < 2) {
+                    System.out.println("You should enter numbers!");
+                    i = 0;
+                } else if (t > 0) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    i = 0;
+                    t = 0;
+                } else if (characters[3 - b][a - 1].equals("X") || characters[3 - b][a - 1].equals("O")) {
+                    System.out.println("This cell is occupied! Choose another");
+                    i = 0;
+                }
+            }
+            int input1 = Integer.parseInt(Character.toString(input.charAt(0)));
+            int input2 = Integer.parseInt(Character.toString(input.charAt(2)));
+            characters[3 - input2][input1 - 1] = "X";
+
+            print(characters);
+
+            draw = 0;                                                                //Check
+
+            for (int i = 0; i < 3; i++) {
+                if (characters[i][0] == "X" && characters[i][1] == "X" && characters[i][2] == "X") {
+                    return characters[i][0];
+
+                } else if (characters[0][i] == "X" && characters[1][i] == "X" && characters[2][i] == "X") {
+                    return "X";
+                } else if (characters[0][0] == "X" && characters[1][1] == "X" && characters[2][2] == "X") {
+                    return "X";
+                } else if (characters[2][0] == "X" && characters[1][1] == "X" && characters[0][2] == "X" ) {
+                    return "X";
+                }
+                for (int j = 0; j < 3; j++) {
+                    if (!characters[i][j].equals(" ")) {
+                        draw++;
+                    }
+                }
+            }
+            if (draw == 9) {
+                return "D";
+            }
+
+            check = 0;                                                                               //O's turn
+            t = 0;
+            a = 0;
+            b = 0;
+
+            for (int i = 0; i < 2; ) {
+                System.out.print("Enter the coordinates: ");
+                input = sc.nextLine();
+
+                for (int j = 0; j < 3; j++) {
+                    if (Character.isDigit(input.charAt(j))) {
+                        i++;
+                        check = Integer.parseInt(Character.toString(input.charAt(j)));
+                        a = Integer.parseInt(Character.toString(input.charAt(0)));
+                        b = Integer.parseInt(Character.toString(input.charAt(2)));
+                        if (check > 3) {
+                            t++;
+                        }
+
+                    }
+                }
+                if (i < 2) {
+                    System.out.println("You should enter numbers!");
+                    i = 0;
+                } else if (t > 0) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    i = 0;
+                    t = 0;
+                } else if (characters[3 - b][a - 1].equals("X") || characters[3 - b][a - 1].equals("O")) {
+                    System.out.println("This cell is occupied! Choose another");
+                    i = 0;
+                }
+            }
+            input1 = Integer.parseInt(Character.toString(input.charAt(0)));
+            input2 = Integer.parseInt(Character.toString(input.charAt(2)));
+            characters[3 - input2][input1 - 1] = "O";
+
+            print(characters);
+
+            draw = 0;                                                  //checking result
+            for (int i = 0; i < 3; i++) {
+                if (characters[i][0] == "O" && characters[i][1] == "O" && characters[i][2] == "O") {
+                    return "O";
+                } else if (characters[0][i] == "O" && characters[1][i] == "O" && characters[2][i] == "O") {
+                    return "O";
+                } else if (characters[0][0] == "O" && characters[1][1] == "O" && characters[2][2] == "O") {
+                    return "O";
+                } else if (characters[2][0] == "O" && characters[1][1] == "O" && characters[0][2] == "O") {
+                    return "O";
+                }
+                for (int j = 0; j < 3; j++) {
+                    if (!characters[i][j].equals(" ")) {
+                        draw++;
+                    }
+                }
+            }
+            if (draw == 9) {
+                return "D";
+            }
+        }
+    }
+}
